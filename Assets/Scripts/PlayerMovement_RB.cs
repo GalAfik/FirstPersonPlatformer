@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+
 public class PlayerMovement_RB : MonoBehaviour
 {
-	private CharacterController controller;
+	new Rigidbody rigidbody;
 
 	public float speed = 12f;
 	public float jumpHeight = 3f;
@@ -14,17 +16,22 @@ public class PlayerMovement_RB : MonoBehaviour
 	public float groundDistance = 0.1f;
 	public LayerMask groundMask;
 
-	private Vector3 velocity;
-	private bool isGrounded;
+	Vector3 velocity;
+	bool isGrounded;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		controller = GetComponent<CharacterController>();
+		rigidbody = GetComponent<Rigidbody>();
 	}
 
 	// Update is called once per frame
 	void Update()
+	{
+		HandleForce();
+	}
+
+	void HandleForce()
 	{
 		// Raycast - test if the player is on the ground
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -37,7 +44,7 @@ public class PlayerMovement_RB : MonoBehaviour
 		Vector3 move = transform.right * x + transform.forward * z;
 
 		// Apply movement vector
-		controller.Move(move * speed * Time.deltaTime);
+		rigidbody.AddForce(move * speed * Time.deltaTime, ForceMode.Force);
 
 		// Handle gravity
 		velocity.y += Physics.gravity.y * Time.deltaTime;
@@ -52,6 +59,6 @@ public class PlayerMovement_RB : MonoBehaviour
 		}
 
 		// Apply vertical velocity
-		controller.Move(velocity * gravityModifier * Time.deltaTime);
+		rigidbody.AddForce(velocity * gravityModifier * Time.deltaTime, ForceMode.Impulse);
 	}
 }
