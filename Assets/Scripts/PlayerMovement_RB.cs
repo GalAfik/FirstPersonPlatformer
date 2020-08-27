@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement_RB : MonoBehaviour
 {
 	private CharacterController controller;
 
@@ -17,15 +17,15 @@ public class PlayerMovement : MonoBehaviour
 	private Vector3 velocity;
 	private bool isGrounded;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-		controller = GetComponent<CharacterController>();    
-    }
+	// Start is called before the first frame update
+	void Start()
+	{
+		controller = GetComponent<CharacterController>();
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
+	// Update is called once per frame
+	void Update()
+	{
 		// Raycast - test if the player is on the ground
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
